@@ -93,7 +93,7 @@ $ sudo $GOPATH/bin/frrd
              |
    (zapi/socket/netlink)
              |
-       +-----------+
+       +-----+-----+
        | Linux FIB |
        +-----------+
 ```
