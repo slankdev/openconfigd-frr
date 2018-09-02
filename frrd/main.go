@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/slankdev/frr"
+	"os"
 	"os/signal"
 	"syscall"
+	"github.com/slankdev/frr"
 )
 
 func main() {
