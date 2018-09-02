@@ -89,7 +89,7 @@ $ sudo $GOPATH/bin/frrd
              |           |
          +---+--+        |
          | FRRd +--------+
-         +------+
+         +---+--+
              |
    (zapi/socket/netlink)
              |
