@@ -48,7 +48,7 @@ frr      21595  0.0  0.1  37932  4352 ?        S<s  09:14   0:00 /usr/lib/frr/os
 start frrd with openconfigd
 ```
 $ cd $GOPATH/bin
-$ sudo $GOPATH/bin/openconfigd -y $GOPATH/src/github.com/coreswitch/openconfigd/yang &
+$ sudo $GOPATH/bin/openconfigd -y $GOPATH/src/github.com/slankdev/frr/yang &
 $ sudo $GOPATH/bin/frrd &
 $ cli
 router>
