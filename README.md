@@ -31,7 +31,21 @@ Following figure shows system architecture.
 ## Install & Run
 
 ```
+$ cd /tmp
+$ wget https://github.com/FRRouting/frr/releases/download/frr-5.0.1/frr_5.0.1-1.ubuntu16.04.1_amd64.deb
+$ sudo dpkg -i frr_5.0.1*.deb
+$ sudo cp /usr/share/doc/frr/examples/bgpd.conf.sample /etc/frr/bgpd.conf
+$ sudo cp /usr/share/doc/frr/examples/ospfd.conf.sample /etc/frr/ospfd.conf
+$ sudo cp /usr/share/doc/frr/examples/zebra.conf.sample /etc/frr/zebra.conf
+$ sudo vim /etc/frr/daemons
+~ zebra=yes
+~ bgpd=yes
+~ ospfd=yes
 $ go get github.com/coreswitch/openconfigd/openconfigd
+$ go get github.com/coreswitch/openconfigd/cli_command
+$ cd $GOPATH/src/github.com/coreswitch/openconfigd/cli
+$ ./configure && make && sudo make install
+$ sudo cp $GOPATH/src/github.com/coreswitch/openconfigd/bash_completion.d/cli /etc/bash_completion.d/
 $ go get github.com/slankdev/frr/frrd
 ```
 
