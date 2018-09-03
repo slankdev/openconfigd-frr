@@ -30,6 +30,7 @@ Following figure shows system architecture.
 
 ## Install & Run
 
+setup frr and chech it's running
 ```
 $ cd /tmp
 $ wget https://github.com/FRRouting/frr/releases/download/frr-5.0.1/frr_5.0.1-1.ubuntu16.04.1_amd64.deb
@@ -41,22 +42,23 @@ $ sudo vim /etc/frr/daemons
 ~ zebra=yes
 ~ bgpd=yes
 ~ ospfd=yes
-$ go get github.com/coreswitch/openconfigd/openconfigd
-$ go get github.com/coreswitch/openconfigd/cli_command
-$ cd $GOPATH/src/github.com/coreswitch/openconfigd/cli
-$ ./configure && make && sudo make install
-$ sudo cp $GOPATH/src/github.com/coreswitch/openconfigd/bash_completion.d/cli /etc/bash_completion.d/
-$ go get github.com/slankdev/frr/frrd
-```
-
-chech frr is running
-```
+$ sudo systemctl restart frr
 $ ps aux | grep frr
 ...
 frr      21579  0.0  0.1  38896  5724 ?        S<s  09:14   0:00 /usr/lib/frr/zebra -s 90000000 --daemon -A 127.0.0.1
 frr      21586  0.0  0.1 187772  7448 ?        S<sl 09:14   0:00 /usr/lib/frr/bgpd --daemon -A 127.0.0.1
 frr      21595  0.0  0.1  37932  4352 ?        S<s  09:14   0:00 /usr/lib/frr/ospfd --daemon -A 127.0.0.1
 ...
+```
+
+setup openconfigd and frrd
+```
+$ go get github.com/coreswitch/openconfigd/openconfigd
+$ go get github.com/coreswitch/openconfigd/cli_command
+$ cd $GOPATH/src/github.com/coreswitch/openconfigd/cli
+$ ./configure && make && sudo make install
+$ sudo cp $GOPATH/src/github.com/coreswitch/openconfigd/bash_completion.d/cli /etc/bash_completion.d/
+$ go get github.com/slankdev/frr/frrd
 ```
 
 start frrd with openconfigd
