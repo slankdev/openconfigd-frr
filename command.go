@@ -87,6 +87,26 @@ const showCmdSpec = `
     },
     {
         "name": "quagga_show",
+        "line": "show interface (:frrd:interface|)",
+        "mode": "exec",
+        "helps": [
+            "Show running system information",
+            "Interface information",
+            "Interface name"
+        ]
+    },
+    {
+        "name": "quagga_show",
+        "line": "show bgp detail",
+        "mode": "exec",
+        "helps": [
+            "Show running system information",
+            "BGP information",
+            "Detailed information on flowspec entries"
+        ]
+    },
+    {
+        "name": "quagga_show",
         "line": "show bgp ipv6",
         "mode": "exec",
         "helps": [

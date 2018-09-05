@@ -15,6 +15,7 @@ import (
 	"net"
 	"strings"
 	"time"
+	"github.com/vishvananda/netlink"
 )
 
 const (
@@ -39,8 +40,12 @@ func (s *grpcExecServer) DoExec(_ context.Context, request *rpc.ExecRequest) (*r
 			arg = request.Args[0]
 		}
 		switch arg {
-		case "neighbor":
-			// XXX
+		case "interface":
+			ifaces, _ := netlink.LinkList()
+			for _, iface := range ifaces {
+				name := iface.Attrs().Name
+				reply.Candidates = append(reply.Candidates, name)
+			}
 		}
 	case rpc.ExecType_EXEC:
 		_, fn, _, _ := execParser.ParseLine(request.Line)
@@ -75,8 +80,8 @@ func (s *grpcShowServer) Show(request *rpc.ShowRequest, stream rpc.Show_ShowServ
 func grpcRegisterModule(conn *grpc.ClientConn) error {
 	client := rpc.NewRegisterClient(conn)
 	request := &rpc.RegisterModuleRequest{
-		Module: QUAGGAD_MODULE,
-		Port:   fmt.Sprintf("%d", QUAGGAD_PORT),
+		Module: FRRD_MODULE,
+		Port:   fmt.Sprintf("%d", FRRD_PORT),
 	}
 	_, err := client.DoRegisterModule(context.Background(), request)
 	if err != nil {
@@ -94,7 +99,7 @@ func grpcRegisterCommands(conn *grpc.ClientConn) {
 	showParser = cmd.NewParser()
 
 	for _, command := range showCommands {
-		command.Module = QUAGGAD_MODULE
+		command.Module = FRRD_MODULE
 		command.Privilege = 1
 		command.Code = rpc.ExecCode_REDIRECT_SHOW
 
@@ -111,7 +116,7 @@ func grpcRegisterCommands(conn *grpc.ClientConn) {
 	execParser = cmd.NewParser()
 
 	for _, command := range execCommands {
-		command.Module = QUAGGAD_MODULE
+		command.Module = FRRD_MODULE
 		command.Privilege = 1
 		command.Code = rpc.ExecCode_REDIRECT
 
@@ -133,8 +138,8 @@ func grpcSubscribe(conn *grpc.ClientConn) (rpc.Config_DoConfigClient, error) {
 	path := []string{"interfaces", "protocols", "policy"}
 	request := &rpc.ConfigRequest{
 		Type:   rpc.ConfigType_SUBSCRIBE_MULTI,
-		Module: QUAGGAD_MODULE,
-		Port:   QUAGGAD_PORT,
+		Module: FRRD_MODULE,
+		Port:   FRRD_PORT,
 		Path:   path,
 	}
 	err = stream.Send(request)
@@ -240,7 +245,7 @@ func grpcLoop() {
 }
 
 func initGrpc() {
-	listen, err := net.Listen("tcp", fmt.Sprintf(":%d", QUAGGAD_PORT))
+	listen, err := net.Listen("tcp", fmt.Sprintf(":%d", FRRD_PORT))
 	if err != nil {
 		grpclog.Fatalf("failed %v", err)
 	}

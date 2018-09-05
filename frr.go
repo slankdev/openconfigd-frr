@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	QUAGGAD_MODULE = "quaggad"
-	QUAGGAD_PORT   = 2699
+	FRRD_MODULE = "frrd"
+	FRRD_PORT   = 2699
 )
 
 var (
