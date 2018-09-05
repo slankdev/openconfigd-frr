@@ -2,8 +2,8 @@ package frr
 
 import (
 	"fmt"
-
 	"github.com/coreswitch/cmd"
+	"os/exec"
 )
 
 var (
@@ -23,6 +23,43 @@ func GetPasswd() string {
 
 func GetHash() string {
 	return quaggaHash
+}
+
+func quaggaInterfacesInterfaceIpv4Address(Cmd int, Args cmd.Args) int {
+	switch Cmd {
+	case cmd.Set:
+		quaggaVtysh("configure terminal",
+			fmt.Sprintf("interface %s", Args[0]),
+			fmt.Sprintf("ip address %s", Args[1]))
+	case cmd.Delete:
+		quaggaVtysh("configure terminal",
+			fmt.Sprintf("interface %s", Args[0]),
+			fmt.Sprintf("no ip address %s", Args[1]))
+	}
+	return cmd.Success
+}
+
+func iprouteInterfacesInterfaceVlan(Cmd int, Args cmd.Args) int {
+  cmdArgs := []string{}
+	switch Cmd {
+	case cmd.Set:
+    link := Args[0].(string)
+    devname := fmt.Sprintf("%s.%s", Args[0], Args[1])
+    vlanid, _ := Args[1].(string)
+    cmdArgs = []string{"ip", "link", "add", "link", link, "name", devname, "type", "vlan", "id", vlanid}
+	case cmd.Delete:
+    devname := fmt.Sprintf("%s.%s", Args[0], Args[1])
+    cmdArgs = []string{"ip", "link", "del", devname}
+	}
+  out, err := exec.Command("sudo", cmdArgs...).CombinedOutput()
+	if err != nil {
+		s := fmt.Sprint(err)
+		fmt.Println("error linuxIproute2: ", s)
+		return cmd.Success
+	}
+	s := string(out)
+	fmt.Println("linuxIproute2: ", s)
+	return cmd.Success
 }
 
 /*
@@ -14765,6 +14802,15 @@ func quaggaProtocolsOspfv3RedistributeStaticRouteMap(Cmd int, Args cmd.Args) int
 
 func initConfig() {
 	configParser = cmd.NewParser()
+	configParser.InstallCmd(
+		[]string{"interfaces", "interface", "WORD", "vlan", "WORD"},
+		iprouteInterfacesInterfaceVlan)
+	configParser.InstallCmd(
+		[]string{"interfaces", "interface", "WORD", "vlans", "WORD"},
+		iprouteInterfacesInterfaceVlan)
+	configParser.InstallCmd(
+		[]string{"interfaces", "interface", "WORD", "ipv4", "address", "WORD"},
+		quaggaInterfacesInterfaceIpv4Address)
 	configParser.InstallCmd(
 		[]string{"interfaces", "interface", "WORD", "ipv4", "ospf", "authentication", "md5", "key-id", "WORD"},
 		quaggaInterfacesInterfaceIpv4OspfAuthenticationMd5KeyId)

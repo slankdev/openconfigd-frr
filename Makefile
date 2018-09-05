@@ -18,3 +18,5 @@ kill:
 	sudo killall frrd
 	sudo killall openconfigd
 
+conf:
+	sudo sh -c "vtysh -c 'show run'"
