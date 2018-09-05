@@ -39,7 +39,7 @@ func quaggaInterfacesInterfaceIpv4Address(Cmd int, Args cmd.Args) int {
 	return cmd.Success
 }
 
-func iprouteInterfacesInterfaceVlan(Cmd int, Args cmd.Args) int {
+func iprouteInterfacesInterfaceVlans(Cmd int, Args cmd.Args) int {
   cmdArgs := []string{}
 	switch Cmd {
 	case cmd.Set:
@@ -14803,11 +14803,8 @@ func quaggaProtocolsOspfv3RedistributeStaticRouteMap(Cmd int, Args cmd.Args) int
 func initConfig() {
 	configParser = cmd.NewParser()
 	configParser.InstallCmd(
-		[]string{"interfaces", "interface", "WORD", "vlan", "WORD"},
-		iprouteInterfacesInterfaceVlan)
-	configParser.InstallCmd(
 		[]string{"interfaces", "interface", "WORD", "vlans", "WORD"},
-		iprouteInterfacesInterfaceVlan)
+		iprouteInterfacesInterfaceVlans)
 	configParser.InstallCmd(
 		[]string{"interfaces", "interface", "WORD", "ipv4", "address", "WORD"},
 		quaggaInterfacesInterfaceIpv4Address)

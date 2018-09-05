@@ -206,11 +206,6 @@ module coreswitch {
           range "68..max";
         }
       }
-      leaf vlan {
-        type uint16 {
-          range 1..4096;
-        }
-      }
       list vlans {
         key "vlan-id";
         leaf vlan-id {
@@ -228,7 +223,7 @@ module coreswitch {
           enum 4x10G;
           enum 4x25G;
           enum 4x1G_SGMII;
-        }        
+        }
       }
       leaf fec {
         type enumeration {
@@ -238,7 +233,7 @@ module coreswitch {
       }
     }
   }
-  
+
   container routing-options {
     ext:help "routing-option help";
     leaf router-id {
