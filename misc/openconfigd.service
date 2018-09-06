@@ -1,0 +1,9 @@
+[Unit]
+Description = Openconfigd
+After=openconfigd.service
+
+[Service]
+ExecStart = /home/vagrant/go/bin/openconfigd -y /home/vagrant/go/src/github.com/slankdev/frr/yang
+
+[Install]
+WantedBy = multi-user.target

@@ -1,0 +1,9 @@
+[Unit]
+Description = FRR daemon for Openconfigd
+After=openconfigd.service
+
+[Service]
+ExecStart = /home/vagrant/go/bin/frrd
+
+[Install]
+WantedBy = multi-user.target
