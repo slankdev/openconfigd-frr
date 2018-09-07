@@ -51,13 +51,17 @@ frr      21595  0.0  0.1  37932  4352 ?        S<s  09:14   0:00 /usr/lib/frr/os
 ...
 ```
 
-setup openconfigd and frrd
+setup openconfigd
 ```
 $ go get github.com/coreswitch/openconfigd/openconfigd
 $ go get github.com/coreswitch/openconfigd/cli_command
 $ cd $GOPATH/src/github.com/coreswitch/openconfigd/cli
 $ ./configure && make && sudo make install
 $ sudo cp $GOPATH/src/github.com/coreswitch/openconfigd/bash_completion.d/cli /etc/bash_completion.d/
+```
+
+setup frrd
+```
 $ go get github.com/slankdev/frr/frrd
 ```
 
